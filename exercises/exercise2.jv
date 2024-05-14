@@ -11,7 +11,7 @@ pipeline TreesPipeline {
 
     block Baumart_deutschDeleter oftype ColumnDeleter {
         // baumart_botanisch is the fourth column, A,B,C,D
-        delete: [ column D ];   
+        delete: [ column E ];   
     }
 
     block TreesTableInterpreter oftype TableInterpreter {
