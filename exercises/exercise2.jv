@@ -20,8 +20,9 @@ pipeline TreesPipeline {
             "lfd_nr" oftype integer,
             "stadtteil" oftype FurthCity,
             "standort" oftype text,
-            // "baumart_deutsch" will be deleted by Baumart_deutschDeleter
             "baumart_botanisch" oftype text,
+            // "baumart_deutsch" will be deleted by Baumart_deutschDeleter
+            "baumart_deutsch" oftype text,
             "id" oftype Id,
             "baumfamilie" oftype text
         ];
