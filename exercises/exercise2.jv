@@ -38,7 +38,7 @@ pipeline TreesPipeline {
     }
     //{1-3 numbers}.{numbers}
     constraint IdConstraint oftype RegexConstraint {
-        regex: /\d{1,3}\.\d+, \d{1,3}\.\d+/;
+        regex: /^\d{1,3}\.\d+, \d{1,3}\.\d+$/;
     }
     // FurthCity is a custom valuetype
     valuetype FurthCity oftype text {
@@ -46,7 +46,7 @@ pipeline TreesPipeline {
     }
     //We are only interested in Furth, valid city start with "Furth-"
     constraint FurthCityConstraint oftype RegexConstraint {
-        regex: /^Furth-*/;
+        regex: /^Furth-.*/;
     }
 
 
