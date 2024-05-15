@@ -35,7 +35,16 @@ This dataset report of the number of forest fires in Brazil divided by states. T
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
-1. Example Issue [#1][i1]
-2. ...
+### 1. Data Preparation 
+
+### 2. Climate Data Analysis 
+
+### 3. Data Documentation 
+
+### 4. Data Integration
+
+### 5. Model Prediction
+
+### 6. Reporting
 
 [i1]: https://github.com/jvalue/made-template/issues/1
