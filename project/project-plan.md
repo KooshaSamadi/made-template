@@ -7,30 +7,31 @@ Awesome MADE project.
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-- How can analyzing the frequency and distribution of forest fires in Brazil help local communities and policymakers?
-- How can analyzing historical weather patterns in Australia help agricultural stakeholders make informed decisions?
+How do changes in forest cover correlate with CO2 emissions trends globally?
+What are the impacts of deforestation on CO2 levels in regions most affected by forest fires?
+
 
 ## Description
 
 <!-- Describe your data science project in max. 200 words. Consider writing about why and how you attempt it. -->
-Forest fires are a critical environmental issue because they lead to significant loss of biodiversity, contribute to carbon emissions, and disrupt ecological balance.This project analyzes the incidence of forest fires in Brazil, utilizing time series data to track frequency and distribution across different states over a period from 1998 to 2017. Weather variability is an important concern because it affects ecosystems, human health, and various economic sectors. This project analyzes Australian weather patterns, using historical data from various meteorological stations across the country. 
+The forest dataset, derived from FAO's Global Forest Resources Assessment 2020, provides detailed information on forest area changes from 1990 to 2020 across 236 countries and territories. It includes metrics like total land area, the proportion of forest cover, deforestation rates, and areas affected by fire, offering insights into forest conservation and degradation patterns. The CO2 emissions dataset, sourced from the Climate Watch Data portal using the CAIT data source, tracks CO2 emissions from 1990 to 2018 globally, aiding in understanding the relationship between deforestation and carbon emissions.
 
 ## Datasources
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource1: weatherAUS
-* Metadata URL: https://mobilithek.info/offers/-6901989592576801458
-* Data URL: https://www.kaggle.com/datasets/trisha2094/weatheraus/download?datasetVersionNumber=1
+### Datasource1:  Global Forest Insights 1990-2020 | FAO
+* Metadata URL: https://www.kaggle.com/datasets/kanchana1990/global-forest-insights-1990-2020-fao
 * Data Type: CSV
-There are 24 columns in the dataset, which include various weather-related measurements and information such as date, location, temperature, rainfall, wind speed, pressure, humidity, etc. it includes daily weather observations across multiple locations in Australia.
+ * License: CC0: Public Domain
+It investigates the changing worldwide forest landscape between 1990 and 2020. This little dataset, which shows changes over three decades, offers a detailed view of forest areas across 236 nations and territories. It is taken from FAO's comprehensive assessments.
 
 
-### Datasource2: Forest Fires in Brazil
-* Metadata URL: https://www.kaggle.com/datasets/gustavomodelli/forest-fires-in-brazil
-* Data URL: https://www.kaggle.com/datasets/gustavomodelli/forest-fires-in-brazil/download?datasetVersionNumber=1
+### Datasource2: Carbon Dioxide Emissions of the World( 1990-2018)
+* Metadata URL: https://www.kaggle.com/datasets/ankanhore545/carbon-dioxide-emissions-of-the-world
 * Data Type: CSV
-This dataset report of the number of forest fires in Brazil divided by states. The series comprises the period of approximately 10 years (1998 to 2017). The data were obtained from the official website of the Brazilian government.
+* License: Attribution 4.0 International (CC BY 4.0)
+The data is gathered from the Climate Watch Data portal using CAIT data source. The data is collected for all the countries around the world, while covering a span of close to 3 decades(1990-2018). Lets deep dive in the dataset and try to get some more insights and patterns, which can help us in putting a step forward towards the imminent crisis.
 ## Work Packages
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
