@@ -1,0 +1,95 @@
+pipeline GetreidePipeline
+{
+    GetreideExtractor
+        -> GetreideTextFileInterpreter
+        -> GetreideCSVInterpreter 
+        -> GetreideRowDeleter
+        -> GetreideSelector
+        -> TransportedGetreideHeaderWriter
+        -> QuantityNameHeaderWriter
+        -> GetreideTableInterpreter
+        -> GetreideLoader;
+
+    block GetreideExtractor oftype HttpExtractor    
+    {
+        // Url for the data
+        url: "https://www-genesis.destatis.de/genesis/downloads/00/tables/46131-0014_00.csv";
+    }
+    //Ensure German umlauts are saved correctly
+    block GetreideTextFileInterpreter oftype TextFileInterpreter { encoding: "latin3";}
+    block GetreideCSVInterpreter oftype CSVInterpreter 
+    {
+        delimiter: ";";
+    }
+    
+    // dlete metadate rows
+    block GetreideRowDeleter oftype RowDeleter
+    {
+        delete: [row 1, row 2, row 3, row 4, row 5, row 6, row 41338, row 41339];
+    }
+
+    // Select the relevant columns
+    block GetreideSelector oftype CellRangeSelector
+    {
+        select: range A1:AU*;
+    }
+    
+    block TransportedGetreideHeaderWriter oftype CellWriter
+    {
+        at: range A1:E1;
+        write: ["year", "month", "goods_id", "goods_name", "goods_source"];
+    }
+    // Define the columns of the table
+    block GetreideTableInterpreter oftype TableInterpreter 
+    {
+        header: true;
+        columns: [
+            "year" oftype PositiveNumCons,
+            "month" oftype MonthCapitalConst,
+            "goods_id" oftype GetreideidConst,
+            "goods_name" oftype text,
+            "goods_source" oftype text, 
+            "abroad" oftype PositiveNumCons,
+            "total" oftype PositiveNumCons,  
+        ];
+    }
+    // rename the header for the quantity and name columns
+    block QuantityNameHeaderWriter oftype CellWriter
+    {
+        at: range AT1:AU1;
+        write: [ "abroad", "total"];
+    }
+  
+    // positive integers
+    valuetype PositiveNumCons oftype integer {
+        constraints: [PositiveNum];
+    }
+
+    constraint PositiveNum oftype RangeConstraint{
+        lowerBound: 0;
+        lowerBoundInclusive:true;
+    }
+    // month must be captilzed
+
+    valuetype MonthCapitalConst oftype text {
+        constraints: [GermanMonthConsrtraint];
+    }
+    constraint GermanMonthConsrtraint oftype AllowlistConstraint {
+        allowlist:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    }
+    // 'goods_id' must start with NST7-, followed by three numbers or capital letters
+    valuetype GetreideidConst oftype text
+    {
+        constraints: [GetreideNST7];
+    }
+    constraint GetreideNST7 oftype RegexConstraint
+    {
+        regex: /^NST7-[A-Z0-9]{3}$/;
+    }
+
+    block GetreideLoader oftype SQLiteLoader {
+        table: "goods";
+        file: "goodsTransportedByTrain.sqlite";
+    }
+
+}
