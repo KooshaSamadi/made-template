@@ -1,0 +1,82 @@
+pipeline TemperaturePipeline {
+    TemperatureExtractor
+        -> ZipInterpreter
+        -> TemperatureCSVFilePicker
+        -> TemperatureTextFileInterpreter
+        -> TemperatureCSVInterpreter
+        -> GeraetAktivSelector
+        -> TemperatureColDeleter
+        -> TemperatureTableInterpreter
+        -> TemperatureToFahrenheitConverter
+        -> BatteryTempToFahrenheitConverter
+        -> TemperatureLoader;
+
+    block TemperatureExtractor oftype HttpExtractor {
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
+    
+    block ZipInterpreter oftype ArchiveInterpreter {
+        archiveType: "zip";
+    }
+    // germna umlauts saved correctly
+    block TemperatureCSVFilePicker oftype FilePicker {
+        path: "/data.csv";
+    }
+
+    block TemperatureTextFileInterpreter oftype TextFileInterpreter {}
+
+    block TemperatureCSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+    // delete columns after 1th column
+    block GeraetAktivSelector oftype CellRangeSelector {
+        select: range A1:J*;
+    }
+    //delete other columns
+    block TemperatureColDeleter oftype ColumnDeleter {
+        delete: [column F, column G, column H, column I];
+    }
+    
+    block TemperatureTableInterpreter oftype TableInterpreter {
+        header: false;
+        columns: [
+            "id" oftype integer,
+            "producer" oftype text,
+            "model" oftype text,
+            "month" oftype Month,
+            "temperature" oftype decimal,
+            "battery_temperature" oftype decimal
+        ];
+    }
+
+    block TemperatureToFahrenheitConverter oftype TableTransformer {
+        inputColumns: ['temperature'];
+        outputColumn: 'temperature';
+        use: CelsiusToFahrenheitConverter;
+    }
+
+    block BatteryTempToFahrenheitConverter oftype TableTransformer {
+        inputColumns: ['battery_temperature'];
+        outputColumn: 'battery_temperature';
+        use: CelsiusToFahrenheitConverter;
+    }
+    //Transform temperatures in Celsius to Fahrenheit 
+    transform CelsiusToFahrenheitConverter {
+        from Celsius oftype decimal;
+        to Fahrenheit oftype decimal;
+        Fahrenheit: (Celsius * 9/5) + 32;
+    }
+
+    valuetype Month oftype integer {
+        constraints: [ MonthConstraints ];
+    }
+
+    constraint MonthConstraints on integer:
+        value >= 1 and value <= 12;
+
+    block TemperatureLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "temperatures.sqlite";
+        dropTable: true;
+    }
+}
