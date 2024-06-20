@@ -1,42 +1,36 @@
-name: CI
+name: Pipeline Tests
 
-on:
+on: 
+  workflow_dispatch:
   push:
     branches:
-      - main
-
+    - main
+    paths:
+    - project/**
+  
 jobs:
-  execute-pipeline:
+  pipeline-tests:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        path: main
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.8'
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+        cache: pip
+        cache-dependency-path: main/project/requirements.txt
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r ./project/requirements.txt 
-          pip install pytest
+    - name: Install python dependecies
+      working-directory: ./main
+      run: pip install -r project/requirements.txt
 
-      - name: Set execute permissions and run pipeline
-        run: |
-          cd project
-          chmod +x pipeline.sh
-          ./pipeline.sh
-      - name: Set execute permissions and run tests
-        run: |
-          cd project
-          chmod +x tests.sh
-          ./tests.sh
-      # Upload output files
-      - name: Upload output files
-        uses: actions/upload-artifact@v2
-        with:
-          name: output-files
-          path: ./data/*.sqlite
+    - name: Run tests
+      working-directory: ./main
+      run: |
+        echo "This may take some time..."
+        project/tests.sh
