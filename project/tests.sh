@@ -1,2 +1,8 @@
+
 #!/bin/bash
-python tests_pipeline.py
+
+set -e
+
+echo "Running..."
+
+pytest project/tests_pipeline.py
