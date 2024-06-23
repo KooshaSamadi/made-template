@@ -33,7 +33,7 @@ jobs:
 
       - name: Set execute permissions and run tests
         run: |
-          chmod +x project/tests_pipeline.sh
+          chmod +x project/tests.sh
           ./project/tests.sh
 
     
