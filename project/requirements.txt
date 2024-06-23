@@ -1,9 +1,3 @@
-requests
-zipfile
-os
-tempfile
-unittest
-io
 pandas
 requests
 matplotlib
